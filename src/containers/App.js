@@ -1,16 +1,32 @@
 import React, { Component} from 'react';
 import CardList from '../components/CardList';
+import {connect} from 'react-redux';
 // import {robots} from '../robots';
 import SearchBox from '../components/SearchBox';
 import './App.css';
 import Scroll from '../components/Scroll';
+import ErrorBoundry from '../components/ErrorBoundry';
+import {setSearchField} from '../actions';
+// import { searchRobots } from './reducers';
+
+
+const mapStateToProps = state => {
+  return {
+    searchField: state.searchField
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+  }
+}
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
-      robots: [],
-      searchField: '',
+      robots: []
     };
   }
 
@@ -23,12 +39,13 @@ class App extends Component {
     });
   }
 
-  onSearchChange = (event) => {
-    this.setState({searchField: event.target.value});
-  }
+  // onSearchChange = (event) => {
+  //   this.setState({searchField: event.target.value});
+  // }
 
   render(){
-    const {robots, searchField} = this.state;
+    const {robots} = this.state;
+    const {searchField, onSearchChange} = this.props;
     const filterRobots = robots.filter(robot => {
       return (robot.name.toLocaleLowerCase().includes(searchField));
     });
@@ -41,11 +58,13 @@ class App extends Component {
         <div className="tc">
           <h1 className='f1'>RoboFriends</h1>
           <SearchBox 
-            searchChange = {this.onSearchChange}
+            searchChange = {onSearchChange}
             searchField = {searchField}
           />
           <Scroll>
-            <CardList robots = {filterRobots}/>
+            <ErrorBoundry>
+              <CardList robots = {filterRobots}/>
+            </ErrorBoundry>
           </Scroll>
         </div>
       );
@@ -53,4 +72,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
