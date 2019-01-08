@@ -1,0 +1,16 @@
+button.value {
+  display: block;
+  position: absolute;
+  text-align: left;
+  left: 10px;
+  bottom: 10px;
+  border-radius: 4px;
+  background-color: rgba(0,0,0,.85);
+  background-image: url("/coin.svg");
+  background-position: 10px;
+  background-repeat: no-repeat;
+  color: #fff;
+  padding: 5px;
+  min-width: 100px;
+  padding-left: 30px;
+}

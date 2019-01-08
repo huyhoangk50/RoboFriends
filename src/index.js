@@ -9,10 +9,10 @@ import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {createLogger} from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import './index.css';
-import { searchRobots, requestRobots } from './reducers';
+import { searchProducts, requestProducts , requestToBuyProduct, buyProduct} from './reducers';
 
 const logger = createLogger();
-const rootReducer = combineReducers({searchRobots, requestRobots});
+const rootReducer = combineReducers({searchProducts, requestProducts, requestToBuyProduct, buyProduct});
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 
 ReactDOM.render(

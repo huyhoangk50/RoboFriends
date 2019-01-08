@@ -1,16 +1,12 @@
 import React from 'react'
 import Card from './Card';
 
-const CardList = ({robots}) => {
-  // if(true){
-  //   throw new Error('That is an error');
-  // }
-  const cardComponents = robots.map((robot, index) => {
+const CardList = ({requestToBuyProduct , products}) => {
+  const cardComponents = products.map((product, index) => {
     return <Card 
-    key = {robot.id} 
-    id={robot.id} 
-    name = {robot.name} 
-    email = {robot.email}/>
+    product = {product}
+    key = {product.id}
+    requestToBuyProduct  = {requestToBuyProduct }/>
   });
   return (
     <div>
