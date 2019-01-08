@@ -4,7 +4,7 @@ import './Card.css';
 
 const Card = ({product, requestToBuyProduct }) => {
   return (
-    <div className='bg-light-green dib br3 ma2 grow'>
+    <div className='bg-light-green dib br3 ma2 grow' onClick={requestToBuyProduct (product)}>
       <div>
         <img src={product.url} alt="product"/>
         <div>
@@ -15,7 +15,7 @@ const Card = ({product, requestToBuyProduct }) => {
             {product.description}
           </p>
           <div>
-            <button className='value' onClick={requestToBuyProduct (product)}>{product.price} AU</button>
+            <button className='value'>{product.price} KAT</button>
           </div>
         </div>
       </div>
