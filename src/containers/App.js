@@ -4,19 +4,18 @@ import {connect} from 'react-redux';
 import SearchBox from '../components/SearchBox';
 import './App.css';
 import Scroll from '../components/Scroll';
+import CheckingOut from '../components/CheckingOut/CheckingOut';
 import ErrorBoundry from '../components/ErrorBoundry';
-import {setSearchField, requestProducts, requestToBuyProduct, buyProduct} from '../actions';
-// import { searchProducts } from './reducers';
+import {setSearchField, requestProducts} from '../actions';
 
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     searchField: state.searchProducts.searchField,
     products: state.requestProducts.products,
     isPending: state.requestProducts.isPending,
-    isRequestedToBuyProduct: state.requestToBuyProduct.isRequestedTOBuyProduct,
-    selectedProduct: state.requestToBuyProduct.product,
+    isCheckingOut: state.requestToBuyProduct.isCheckingOut,
+    checkingOutProduct: state.requestToBuyProduct.product,
     isBuyingProductError: state.buyProduct.isBuyingProductError,
     error: state.requestProducts.error,
   }
@@ -26,8 +25,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
     onRequestProducts: () => dispatch(requestProducts()),
-    onRequestToBuyProduct: (product) => dispatch(requestToBuyProduct(product)),
-    onBuyProduct: (product, userInfo) => dispatch(buyProduct(product, userInfo)),
   }
 }
 
@@ -40,7 +37,7 @@ class App extends Component {
 
   render(){
     // const {robots} = this.state;
-    const {searchField, onSearchChange, products, isPending, isRequestedToBuyProduct, error} = this.props;
+    const {searchField, onSearchChange, products, isPending, isCheckingOut, error, checkingOutProduct} = this.props;
     const filterProducts = products.filter(product => {
       return (product.name.toLocaleLowerCase().includes(searchField));
     });
@@ -49,28 +46,18 @@ class App extends Component {
         <h1>Loading</h1>
       );
     } else {
-      if(isRequestedToBuyProduct) {
+      if(isCheckingOut) {
         return(
           <div className="tc">
-          <h1 className='f1'>Quay ban hang mini</h1>
-          <SearchBox 
-            searchChange = {onSearchChange}
-            searchField = {searchField}
-          />
-          <Scroll>
-            <ErrorBoundry>
-              <CardList 
-                products = {filterProducts}
-                requestToBuyProduct = {requestToBuyProduct}
-              />
-            </ErrorBoundry>
-          </Scroll>
+          <h1 className='title'>Quay ban hang mini</h1>
+          <CheckingOut 
+          product = {checkingOutProduct}/>
         </div>
         );
       } else {
         return (
           <div className="tc">
-            <h1 className='f1'>Quay ban hang mini</h1>
+            <h1 className='title'>Quay ban hang mini</h1>
             <SearchBox 
               searchChange = {onSearchChange}
               searchField = {searchField}
@@ -79,7 +66,7 @@ class App extends Component {
               <ErrorBoundry>
                 <CardList 
                   products = {filterProducts}
-                  requestToBuyProduct = {requestToBuyProduct}
+                  // requestToBuyProduct = {requestToBuyProduct}
                 />
               </ErrorBoundry>
             </Scroll>

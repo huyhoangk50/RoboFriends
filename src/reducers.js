@@ -4,7 +4,9 @@ import {
   REQUEST_PRODUCTS_SUCCESS,
   REQUEST_PRODUCTS_FAILED,
   BUY_PRODUCT_SUCCESS,
-  BUY_PRODUCT_FAILED
+  BUY_PRODUCT_FAILED,
+  REQUEST_TO_BUY_PRODUCT,
+  CANCEL_ORDER
 } from './constants';
 
 const initialStateSearching = {
@@ -41,25 +43,39 @@ export const requestProducts = (state = initialStateProducts, action = {}) => {
   }
 }
 
-const initialStateRequestProduct = {
-  isRequestedToBuyProduct: false,
+const initialStateCheckingProduct = {
+  isCheckingOut: false,
   product: {}
 }
 
-export const requestToBuyProduct  = (state = initialStateRequestProduct, action = {}) => {
+export const requestToBuyProduct  = (state = initialStateCheckingProduct, action = {}) => {
   switch(action.type){
+    case REQUEST_TO_BUY_PRODUCT:
+      return Object.assign({}, state, {isCheckingOut: true, product: action.payload});
     case BUY_PRODUCT_SUCCESS:
-      return Object.assign({}, state, {isRequestedToBuyProduct: action.payload.isRequestedToBuyProduct, product: action.payload.product});
-    // case BUY_PRODUCT_FAILED:
-    //   return Object.assign({}, state, {isSuccessful: action.payload});
+      return Object.assign({}, state, {isCheckingOut: false, product: {}});
+    case BUY_PRODUCT_FAILED:
+      return Object.assign({}, state, {isCheckingOut: false, product: {}});
+    case CANCEL_ORDER:
+    return Object.assign({}, state, {isCheckingOut: false, product: {}});
     default:
       return state;
   }
 }
 
 const initialStateBuyingProduct = {
-  
+  isBuyingError: false,
+  isBuyingSuccess: false,
+  product: {},
+  error: ""
 };
 export const buyProduct = (state = initialStateBuyingProduct, action = {}) => {
-  return state;
+  switch(action.type){
+    case BUY_PRODUCT_SUCCESS:
+      return Object.assign({}, state, {isBuyingSuccess: true, isBuyingError: false, product: action.payload});
+    case BUY_PRODUCT_FAILED:
+      return Object.assign({}, state, {isBuyingSuccess: false, isBuyingError: true, error: action.payload});
+    default:
+      return state;
+  }
 }

@@ -1,15 +1,14 @@
 import React from 'react'
 import Card from './Card';
 
-const CardList = ({requestToBuyProduct , products}) => {
+const CardList = ({products}) => {
   const cardComponents = products.map((product, index) => {
     return <Card 
     product = {product}
-    key = {product.id}
-    requestToBuyProduct  = {requestToBuyProduct }/>
+    key = {product.id}/>
   });
   return (
-    <div>
+    <div className="flex flex-wrap">
       {cardComponents}
     </div>
   );

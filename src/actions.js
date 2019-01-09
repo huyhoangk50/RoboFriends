@@ -4,7 +4,8 @@ import {
   REQUEST_PRODUCTS_SUCCESS,
   REQUEST_TO_BUY_PRODUCT,
   BUY_PRODUCT_SUCCESS,
-  BUY_PRODUCT_FAILED
+  BUY_PRODUCT_FAILED,
+  CANCEL_ORDER
 } from './constants';
 
 import products from './ProductList';
@@ -33,17 +34,27 @@ export const setSearchField = text => {
 }
 
 export const requestProducts = () => (dispatch) => {
-  dispatch({type: REQUEST_PRODUCTS_PENDING});
+  // dispatch({type: REQUEST_PRODUCTS_PENDING});
   dispatch({type: REQUEST_PRODUCTS_SUCCESS, payload: products});
+  
 }
 
 export const requestToBuyProduct  = (product) => (dispatch) => {
-  dispatch({type: REQUEST_TO_BUY_PRODUCT, payload:{}});
-  // auInstance.transfer("0xCFec1a4839D969a608F31Ad95A2774115962cD18", product.price, {from: account}, (err, result) => {
-  //   console.log(err, result);
-  // });
+  dispatch({type: REQUEST_TO_BUY_PRODUCT, payload: product});
 }
 
-export const buyProduct = (product, userInfo) => (dispatch) => {
+export const buyProduct = (product) => (dispatch) => {
+  auInstance.transfer("0xCFec1a4839D969a608F31Ad95A2774115962cD18", product.price * 10**18, {from: account}, (error, result) =>{
+    if(error) {
+      alert(`Mua ${product.name} không thành công`);
+      dispatch({type: BUY_PRODUCT_FAILED, payload: error});
+    } else {
+      alert('Chúc mừng bạn đã mua thành công ' + product.name);
+      dispatch({type: BUY_PRODUCT_SUCCESS, payload: product});
+    }
+  });
+}
 
+export const cancelOrder = () => (dispatch) =>{
+  dispatch({type: CANCEL_ORDER, payload: {}});
 }
